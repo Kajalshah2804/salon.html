@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lumière Salon — AI Beauty Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --deep: #111111;
+      --panel: #171717;
+      --border: #2a2a2a;
+      --gold: #c9a96e;
+      --gold-light: #e2c898;
+      --gold-dim: rgba(201,169,110,0.15);
+      --white: #f5f2ee;
+      --text: #b8b0a5;
+      --accent: #8b5e3c;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 300; letter-spacing: 0.12em;
+      color: var(--gold);
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text); text-decoration: none;
+      font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: var(--black);
+      border: none; padding: 0.6rem 1.4rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+      letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold-light); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 8rem 2rem 4rem;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,169,110,0.07) 0%, transparent 70%),
+                  radial-gradient(ellipse 40% 40% at 80% 80%, rgba(139,94,60,0.05) 0%, transparent 60%);
+    }
+    .hero-lines {
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(201,169,110,0.04) 60px),
+                        repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(201,169,110,0.04) 60px);
+    }
+    .hero-content { position: relative; max-width: 760px; }
+    .hero-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.8rem;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 300; line-height: 1.05;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    .hero-sub {
+      color: var(--text); font-size: 1rem; line-height: 1.7;
+      max-width: 500px; margin: 0 auto 2.5rem;
+    }
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold); color: var(--black);
+      border: none; padding: 0.9rem 2.2rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+      letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+      transition: all 0.2s; text-decoration: none; display: inline-block;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent; color: var(--white);
+      border: 1px solid var(--border); padding: 0.9rem 2.2rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+      letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+      transition: all 0.2s; text-decoration: none; display: inline-block;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* STATS BAR */
+    .stats-bar {
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      text-align: center;
+    }
+    .stat-item { padding: 2rem 1rem; border-right: 1px solid var(--border); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem; font-weight: 300; color: var(--gold);
+    }
+    .stat-label { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text); margin-top: 0.3rem; }
+
+    /* SERVICES */
+    .section { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
+    .section-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 300;
+      margin-bottom: 3rem; line-height: 1.2;
+    }
+
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px; background: var(--border);
+    }
+    .service-card {
+      background: var(--deep); padding: 2.5rem;
+      transition: background 0.3s; cursor: pointer; position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: var(--gold);
+      transform: scaleX(0); transition: transform 0.3s;
+    }
+    .service-card:hover { background: var(--panel); }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 400; margin-bottom: 0.6rem;
+    }
+    .service-desc { color: var(--text); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.2rem; }
+    .service-price { color: var(--gold); font-size: 0.85rem; letter-spacing: 0.05em; }
+
+    /* AI SECTION */
+    .ai-section {
+      background: var(--deep);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .ai-inner {
+      max-width: 1200px; margin: 0 auto; padding: 6rem 4rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+    }
+    .ai-left { position: sticky; top: 6rem; }
+    .ai-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--gold-dim); border: 1px solid rgba(201,169,110,0.3);
+      padding: 0.4rem 0.9rem; margin-bottom: 1.5rem;
+      font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold);
+    }
+    .ai-badge::before { content: '●'; font-size: 0.5rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* BOOKING FORM */
+    .booking-section {
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+    }
+    .booking-inner {
+      max-width: 900px; margin: 0 auto; padding: 6rem 4rem; text-align: center;
+    }
+
+    /* STEP FORM */
+    .step-form { text-align: left; }
+    .steps-indicator {
+      display: flex; gap: 0; margin-bottom: 3rem;
+    }
+    .step-dot {
+      flex: 1; padding: 0.75rem 1rem; text-align: center;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--deep); border: 1px solid var(--border);
+      color: var(--text); transition: all 0.3s; cursor: default;
+    }
+    .step-dot.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
+    .step-dot.done { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+
+    .form-step { display: none; }
+    .form-step.active { display: block; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-group.full { grid-column: 1/-1; }
+    .form-label { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text); }
+    .form-input {
+      background: var(--black); border: 1px solid var(--border);
+      color: var(--white); padding: 0.85rem 1rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      outline: none; transition: border 0.2s;
+    }
+    .form-input:focus { border-color: var(--gold); }
+    .form-input::placeholder { color: #555; }
+    select.form-input { cursor: pointer; }
+
+    /* SERVICE PICKER */
+    .service-picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1.5rem; }
+    .service-pick {
+      border: 1px solid var(--border); padding: 1.2rem;
+      cursor: pointer; text-align: center; transition: all 0.2s;
+      background: var(--black);
+    }
+    .service-pick:hover { border-color: var(--gold); }
+    .service-pick.selected { border-color: var(--gold); background: var(--gold-dim); }
+    .service-pick .sp-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+    .service-pick .sp-name { font-size: 0.78rem; letter-spacing: 0.05em; color: var(--white); }
+    .service-pick .sp-price { font-size: 0.7rem; color: var(--gold); margin-top: 0.2rem; }
+
+    /* PHOTO UPLOAD */
+    .upload-area {
+      border: 2px dashed var(--border); padding: 3rem; text-align: center;
+      cursor: pointer; transition: all 0.3s; margin-bottom: 1.5rem;
+    }
+    .upload-area:hover { border-color: var(--gold); background: var(--gold-dim); }
+    .upload-area.has-image { border-style: solid; border-color: var(--gold); }
+    .upload-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .upload-text { color: var(--text); font-size: 0.88rem; }
+    #photoPreview { max-width: 100%; max-height: 300px; margin-top: 1rem; display: none; border: 1px solid var(--border); }
+
+    /* AI RESULT */
+    .ai-result-box {
+      background: var(--black); border: 1px solid var(--border);
+      padding: 2rem; margin-top: 1.5rem; display: none;
+    }
+    .ai-result-box.show { display: block; animation: fadeIn 0.5s ease; }
+    .ai-result-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1.5rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .ai-avatar {
+      width: 36px; height: 36px; background: var(--gold-dim);
+      border: 1px solid var(--gold); display: flex; align-items: center;
+      justify-content: center; font-size: 1rem; flex-shrink: 0;
+    }
+    .ai-result-title { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+    .ai-result-content { color: var(--text); font-size: 0.9rem; line-height: 1.75; }
+    .ai-result-content strong { color: var(--white); }
+    .reco-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .reco-chip {
+      background: var(--gold-dim); border: 1px solid rgba(201,169,110,0.4);
+      color: var(--gold); padding: 0.35rem 0.85rem;
+      font-size: 0.75rem; letter-spacing: 0.05em;
+    }
+
+    .loading-dots { display: inline-flex; gap: 4px; align-items: center; }
+    .loading-dots span {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
+      animation: bounce 1.2s infinite;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,80%,100%{transform:scale(0.6)} 40%{transform:scale(1)} }
+
+    .form-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; }
+    .btn-step {
+      background: var(--gold); color: var(--black); border: none;
+      padding: 0.85rem 2rem; font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-step:hover { background: var(--gold-light); }
+    .btn-back {
+      background: transparent; color: var(--text); border: 1px solid var(--border);
+      padding: 0.85rem 1.5rem; font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-back:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* CONFIRMATION */
+    .confirmation { text-align: center; padding: 2rem 0; }
+    .confirm-icon { font-size: 3rem; margin-bottom: 1.5rem; }
+    .confirm-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 300; margin-bottom: 1rem;
+    }
+    .confirm-detail { color: var(--text); font-size: 0.9rem; line-height: 1.7; }
+    .confirm-card {
+      background: var(--black); border: 1px solid var(--border);
+      padding: 1.5rem; margin: 2rem 0; text-align: left;
+    }
+    .confirm-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    .confirm-row:last-child { border-bottom: none; }
+    .confirm-row span:first-child { color: var(--text); }
+    .confirm-row span:last-child { color: var(--gold); }
+
+    /* TESTIMONIALS */
+    .testimonials { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .testi-card {
+      background: var(--deep); border: 1px solid var(--border);
+      padding: 2rem; position: relative;
+    }
+    .testi-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem; color: var(--gold); line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .testi-text { color: var(--text); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.5rem; font-style: italic; }
+    .testi-author { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); }
+    .testi-stars { color: var(--gold); font-size: 0.8rem; margin-top: 0.3rem; }
+
+    /* TEAM */
+    .team-section { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
+    .team-card { text-align: center; }
+    .team-avatar {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: var(--panel); border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; margin: 0 auto 1rem;
+      transition: border-color 0.3s;
+    }
+    .team-card:hover .team-avatar { border-color: var(--gold); }
+    .team-name { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; margin-bottom: 0.3rem; }
+    .team-role { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+    .team-spec { font-size: 0.8rem; color: var(--text); margin-top: 0.4rem; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 4rem;
+      display: grid; grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem; max-width: 1200px; margin: 0 auto;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 300; color: var(--gold); margin-bottom: 1rem;
+    }
+    .footer-desc { color: var(--text); font-size: 0.85rem; line-height: 1.7; }
+    .footer-heading { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 0.6rem; }
+    .footer-links a { color: var(--text); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 1.5rem 4rem;
+      color: var(--text); font-size: 0.78rem; letter-spacing: 0.1em;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--gold); color: var(--black);
+      padding: 1rem 1.5rem; font-size: 0.85rem;
+      display: none; z-index: 1000; animation: slideIn 0.3s ease;
+    }
+    .toast.show { display: block; }
+    @keyframes slideIn { from{transform:translateX(100%)} to{transform:none} }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .section, .testimonials, .team-section { padding: 4rem 1.5rem; }
+      .ai-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .ai-left { position: static; }
+      .booking-inner { padding: 4rem 1.5rem; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .form-grid { grid-template-columns: 1fr; }
+      .service-picker { grid-template-columns: repeat(2, 1fr); }
+      footer { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Lumière</div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#ai-advisor">AI Advisor</a></li>
+    <li><a href="#team">Stylists</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="scrollToBook()">Book Now</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Est. 2018 · AI-Powered Beauty Studio</p>
+    <h1 class="hero-title">Where Beauty Meets <em>Intelligence</em></h1>
+    <p class="hero-sub">India's first AI-powered salon that analyzes your unique features and recommends the perfect look — just for you.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="scrollToBook()">Book Appointment</button>
+      <a href="#ai-advisor" class="btn-outline">Try AI Advisor</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">4,200+</div><div class="stat-label">Happy Clients</div></div>
+  <div class="stat-item"><div class="stat-num">98%</div><div class="stat-label">Satisfaction Rate</div></div>
+  <div class="stat-item"><div class="stat-num">12</div><div class="stat-label">Expert Stylists</div></div>
+  <div class="stat-item"><div class="stat-num">50+</div><div class="stat-label">Services Offered</div></div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section">
+    <p class="section-eyebrow">What We Offer</p>
+    <h2 class="section-title">Premium Salon Services</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">✂️</div>
+        <div class="service-name">Hair Cutting & Styling</div>
+        <div class="service-desc">Precision cuts tailored to your face shape, lifestyle, and hair texture by our master stylists.</div>
+        <div class="service-price">Starting ₹499</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎨</div>
+        <div class="service-name">Hair Coloring</div>
+        <div class="service-desc">Global color, highlights, balayage, ombré, and creative fashion colors using premium Loreal & Wella.</div>
+        <div class="service-price">Starting ₹1,200</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💆</div>
+        <div class="service-name">Facial & Skincare</div>
+        <div class="service-desc">Deep cleansing, anti-aging, brightening, and hydration facials customized for your skin type.</div>
+        <div class="service-price">Starting ₹799</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💅</div>
+        <div class="service-name">Nail Art & Extensions</div>
+        <div class="service-desc">Manicure, pedicure, gel nails, acrylic extensions, and intricate nail art designs.</div>
+        <div class="service-price">Starting ₹399</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🌿</div>
+        <div class="service-name">Hair Treatments</div>
+        <div class="service-desc">Keratin smoothing, protein treatment, hair spa, scalp therapy, and deep conditioning.</div>
+        <div class="service-price">Starting ₹999</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">👰</div>
+        <div class="service-name">Bridal Packages</div>
+        <div class="service-desc">Complete bridal makeover including makeup, hair styling, mehendi, and pre-bridal skin treatments.</div>
+        <div class="service-price">Starting ₹8,999</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI SECTION -->
+<section id="ai-advisor" class="ai-section">
+  <div class="ai-inner">
+    <div class="ai-left">
+      <div class="ai-badge">AI-Powered</div>
+      <p class="section-eyebrow">Smart Beauty Advisor</p>
+      <h2 class="section-title">Upload Your Photo,<br/>Get Personalized Looks</h2>
+      <p style="color:var(--text); line-height:1.75; font-size:0.9rem; margin-bottom:1.5rem;">
+        Our AI analyzes your face shape, skin tone, hair texture, and features to recommend the most flattering hairstyles, colors, and treatments — just for you.
+      </p>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:0.8rem;">
+        <li style="display:flex;gap:0.75rem;align-items:flex-start;color:var(--text);font-size:0.88rem;">
+          <span style="color:var(--gold);margin-top:0.1rem;">◆</span>
+          Face shape analysis for ideal cuts
+        </li>
+        <li style="display:flex;gap:0.75rem;align-items:flex-start;color:var(--text);font-size:0.88rem;">
+          <span style="color:var(--gold);margin-top:0.1rem;">◆</span>
+          Skin tone matched color recommendations
+        </li>
+        <li style="display:flex;gap:0.75rem;align-items:flex-start;color:var(--text);font-size:0.88rem;">
+          <span style="color:var(--gold);margin-top:0.1rem;">◆</span>
+          Hair texture & condition assessment
+        </li>
+        <li style="display:flex;gap:0.75rem;align-items:flex-start;color:var(--text);font-size:0.88rem;">
+          <span style="color:var(--gold);margin-top:0.1rem;">◆</span>
+          Instant treatment & style suggestions
+        </li>
+      </ul>
+    </div>
+
+    <!-- AI TOOL -->
+    <div class="ai-right">
+      <div style="background:var(--black);border:1px solid var(--border);padding:2rem;">
+        <p style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;">AI Advisor Tool</p>
+
+        <!-- Tab selector -->
+        <div style="display:flex;gap:0;margin-bottom:1.5rem;border:1px solid var(--border);">
+          <button class="tab-btn active" id="tabHair" onclick="switchTab('hair')" style="flex:1;padding:0.7rem;background:var(--gold);color:var(--black);border:none;cursor:pointer;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;">Hair Analysis</button>
+          <button class="tab-btn" id="tabSkin" onclick="switchTab('skin')" style="flex:1;padding:0.7rem;background:transparent;color:var(--text);border:none;cursor:pointer;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;border-left:1px solid var(--border);">Skin Analysis</button>
+        </div>
+
+        <!-- Hair tab -->
+        <div id="tabContentHair">
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Hair Type</label>
+            <select class="form-input" id="aiHairType">
+              <option value="">Select your hair type</option>
+              <option>Straight — Fine</option>
+              <option>Straight — Thick</option>
+              <option>Wavy</option>
+              <option>Curly</option>
+              <option>Coily / Kinky</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Current Hair Concern</label>
+            <select class="form-input" id="aiHairConcern">
+              <option value="">Select concern</option>
+              <option>Hair fall & thinning</option>
+              <option>Dryness & frizz</option>
+              <option>Oily scalp</option>
+              <option>Dandruff</option>
+              <option>Color damage</option>
+              <option>No specific concern</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Lifestyle</label>
+            <select class="form-input" id="aiLifestyle">
+              <option value="">Select your lifestyle</option>
+              <option>Corporate / Office</option>
+              <option>College Student</option>
+              <option>Homemaker</option>
+              <option>Artist / Creative</option>
+              <option>Active / Sporty</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Skin tab -->
+        <div id="tabContentSkin" style="display:none;">
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Skin Type</label>
+            <select class="form-input" id="aiSkinType">
+              <option value="">Select skin type</option>
+              <option>Oily</option>
+              <option>Dry</option>
+              <option>Combination</option>
+              <option>Normal</option>
+              <option>Sensitive</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Primary Skin Concern</label>
+            <select class="form-input" id="aiSkinConcern">
+              <option value="">Select concern</option>
+              <option>Acne & breakouts</option>
+              <option>Pigmentation & dark spots</option>
+              <option>Dullness & uneven tone</option>
+              <option>Fine lines & aging</option>
+              <option>Dehydration</option>
+              <option>Sensitive & redness</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Occasion</label>
+            <select class="form-input" id="aiOccasion">
+              <option value="">Select occasion</option>
+              <option>Daily / Everyday</option>
+              <option>Wedding / Bridal</option>
+              <option>Festive / Party</option>
+              <option>Professional</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Photo upload -->
+        <div class="upload-area" id="uploadArea" onclick="document.getElementById('photoInput').click()">
+          <div class="upload-icon">📸</div>
+          <p class="upload-text"><strong style="color:var(--white)">Upload your photo</strong> for AI face analysis<br/><span style="font-size:0.78rem">Click to browse or drag and drop</span></p>
+          <img id="photoPreview" alt="Preview"/>
+        </div>
+        <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)"/>
+
+        <button class="btn-step" style="width:100%;" onclick="runAIAnalysis()">✨ Analyze & Recommend</button>
+
+        <div class="ai-result-box" id="aiResultBox">
+          <div class="ai-result-header">
+            <div class="ai-avatar">✨</div>
+            <div>
+              <div class="ai-result-title">Lumière AI Recommendations</div>
+              <div style="font-size:0.75rem;color:var(--text)">Personalized just for you</div>
+            </div>
+          </div>
+          <div class="ai-result-content" id="aiResultContent">
+            <div class="loading-dots"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking" class="booking-section">
+  <div class="booking-inner">
+    <p class="section-eyebrow" style="text-align:center;">Reserve Your Spot</p>
+    <h2 class="section-title" style="text-align:center;">Book an Appointment</h2>
+
+    <div class="step-form">
+      <div class="steps-indicator">
+        <div class="step-dot active" id="stepInd1">1. Details</div>
+        <div class="step-dot" id="stepInd2">2. Services</div>
+        <div class="step-dot" id="stepInd3">3. Confirm</div>
+      </div>
+
+      <!-- Step 1: Personal Details -->
+      <div class="form-step active" id="step1">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input class="form-input" type="text" id="bName" placeholder="Priya Sharma"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number *</label>
+            <input class="form-input" type="tel" id="bPhone" placeholder="+91 98765 43210"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input class="form-input" type="email" id="bEmail" placeholder="priya@example.com"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Age Group</label>
+            <select class="form-input" id="bAge">
+              <option value="">Select age group</option>
+              <option>Under 18</option>
+              <option>18–25</option>
+              <option>26–35</option>
+              <option>36–45</option>
+              <option>45+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Date *</label>
+            <input class="form-input" type="date" id="bDate"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Time *</label>
+            <select class="form-input" id="bTime">
+              <option value="">Select time slot</option>
+              <option>10:00 AM</option>
+              <option>11:00 AM</option>
+              <option>12:00 PM</option>
+              <option>2:00 PM</option>
+              <option>3:00 PM</option>
+              <option>4:00 PM</option>
+              <option>5:00 PM</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Preferred Stylist</label>
+            <select class="form-input" id="bStylist">
+              <option value="">No preference</option>
+              <option>Meera Kapoor — Hair Specialist</option>
+              <option>Rohan Mehta — Color Expert</option>
+              <option>Ananya Singh — Skin & Beauty</option>
+              <option>Kavita Patel — Bridal Specialist</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Any special requests?</label>
+            <input class="form-input" type="text" id="bNotes" placeholder="e.g. allergic to certain products, first time visit..."/>
+          </div>
+        </div>
+        <div class="form-actions" style="justify-content:flex-end;">
+          <button class="btn-step" onclick="goToStep(2)">Next — Choose Services →</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Services -->
+      <div class="form-step" id="step2">
+        <p style="color:var(--text);font-size:0.88rem;margin-bottom:1.2rem;">Select one or more services:</p>
+        <div class="service-picker">
+          <div class="service-pick" onclick="toggleService(this, 'Hair Cut & Style', 499)">
+            <div class="sp-icon">✂️</div>
+            <div class="sp-name">Hair Cut & Style</div>
+            <div class="sp-price">₹499+</div>
+          </div>
+          <div class="service-pick" onclick="toggleService(this, 'Hair Coloring', 1200)">
+            <div class="sp-icon">🎨</div>
+            <div class="sp-name">Hair Coloring</div>
+            <div class="sp-price">₹1,200+</div>
+          </div>
+          <div class="service-pick" onclick="toggleService(this, 'Facial', 799)">
+            <div class="sp-icon">💆</div>
+            <div class="sp-name">Facial</div>
+            <div class="sp-price">₹799+</div>
+          </div>
+          <div class="service-pick" onclick="toggleService(this, 'Nail Art', 399)">
+            <div class="sp-icon">💅</div>
+            <div class="sp-name">Nail Art</div>
+            <div class="sp-price">₹399+</div>
+          </div>
+          <div class="service-pick" onclick="toggleService(this, 'Hair Treatment', 999)">
+            <div class="sp-icon">🌿</div>
+            <div class="sp-name">Hair Treatment</div>
+            <div class="sp-price">₹999+</div>
+          </div>
+          <div class="service-pick" onclick="toggleService(this, 'Makeup', 1499)">
+            <div class="sp-icon">💄</div>
+            <div class="sp-name">Makeup</div>
+            <div class="sp-price">₹1,499+</div>
+          </div>
+          <div class="service-pick" onclick="toggleService(this, 'Eyebrows & Lashes', 299)">
+            <div class="sp-icon">👁️</div>
+            <div class="sp-name">Brows & Lashes</div>
+            <div class="sp-price">₹299+</div>
+          </div>
+          <div class="service-pick" onclick="toggleService(this, 'Waxing', 349)">
+            <div class="sp-icon">✨</div>
+            <div class="sp-name">Waxing</div>
+            <div class="sp-price">₹349+</div>
+          </div>
+          <div class="service-pick" onclick="toggleService(this, 'Bridal Package', 8999)">
+            <div class="sp-icon">👰</div>
+            <div class="sp-name">Bridal Package</div>
+            <div class="sp-price">₹8,999+</div>
+          </div>
+        </div>
+        <div id="selectedTotal" style="background:var(--black);border:1px solid var(--border);padding:1rem 1.5rem;font-size:0.9rem;display:none;">
+          <span style="color:var(--text)">Estimated Total: </span>
+          <span style="color:var(--gold);font-weight:500;" id="totalAmt">₹0</span>
+        </div>
+        <div class="form-actions">
+          <button class="btn-back" onclick="goToStep(1)">← Back</button>
+          <button class="btn-step" onclick="goToStep(3)">Next — Confirm →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Confirmation -->
+      <div class="form-step" id="step3">
+        <div id="confirmSummary"></div>
+        <div class="form-actions">
+          <button class="btn-back" onclick="goToStep(2)">← Back</button>
+          <button class="btn-step" onclick="confirmBooking()">✓ Confirm Booking</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Success -->
+      <div class="form-step" id="step4">
+        <div class="confirmation">
+          <div class="confirm-icon">🎉</div>
+          <h3 class="confirm-title">You're All Set!</h3>
+          <p class="confirm-detail">Your appointment has been booked successfully. We'll send you a confirmation on WhatsApp and email. See you soon!</p>
+          <div style="margin-top:2rem;">
+            <button class="btn-primary" onclick="resetForm()">Book Another Appointment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<div class="testimonials">
+  <p class="section-eyebrow">What Clients Say</p>
+  <h2 class="section-title">Real Stories, Real Results</h2>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">The AI recommendation was spot on! It suggested a layered bob for my round face and I've never received so many compliments. Meera executed it perfectly.</p>
+      <div class="testi-author">Priya Mehta, Ahmedabad</div>
+      <div class="testi-stars">★★★★★</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">First salon that actually analyzed my skin before recommending a facial. The brightening facial they suggested worked wonders for my pigmentation. Absolutely love it!</p>
+      <div class="testi-author">Shruti Patel, Surat</div>
+      <div class="testi-stars">★★★★★</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">Booked the bridal package for my wedding and it was magical. The team was so professional and the AI advisor helped me decide my entire bridal look.</p>
+      <div class="testi-author">Nisha Shah, Vadodara</div>
+      <div class="testi-stars">★★★★★</div>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="team-section">
+    <p class="section-eyebrow">Meet the Experts</p>
+    <h2 class="section-title">Our Stylists</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">👩</div>
+        <div class="team-name">Meera Kapoor</div>
+        <div class="team-role">Senior Stylist</div>
+        <div class="team-spec">Hair Cutting & Styling Expert · 8 yrs exp</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👨</div>
+        <div class="team-name">Rohan Mehta</div>
+        <div class="team-role">Color Specialist</div>
+        <div class="team-spec">Balayage, Ombré & Creative Colors · 6 yrs exp</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👩</div>
+        <div class="team-name">Ananya Singh</div>
+        <div class="team-role">Skin & Beauty Therapist</div>
+        <div class="team-spec">Advanced Facials & Skincare · 5 yrs exp</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👩</div>
+        <div class="team-name">Kavita Patel</div>
+        <div class="team-role">Bridal Specialist</div>
+        <div class="team-spec">Bridal Makeup & Hair · 10 yrs exp</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div id="contact">
+  <footer>
+    <div>
+      <div class="footer-logo">Lumière</div>
+      <p class="footer-desc">Gujarat's premier AI-powered beauty studio. Where science meets artistry to reveal your most beautiful self.</p>
+      <p style="color:var(--gold);font-size:0.8rem;margin-top:1rem;">📍 G-17, Prahlad Nagar, Ahmedabad, Gujarat 380015</p>
+      <p style="color:var(--text);font-size:0.8rem;margin-top:0.4rem;">📞 +91 98765 43210 · ✉️ hello@lumieresalon.in</p>
+    </div>
+    <div>
+      <p class="footer-heading">Services</p>
+      <ul class="footer-links">
+        <li><a href="#services">Hair Services</a></li>
+        <li><a href="#services">Skin & Facials</a></li>
+        <li><a href="#services">Nail Art</a></li>
+        <li><a href="#services">Bridal Packages</a></li>
+        <li><a href="#services">Treatments</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-heading">Hours</p>
+      <ul class="footer-links">
+        <li><a href="#">Mon–Sat: 10am – 8pm</a></li>
+        <li><a href="#">Sunday: 11am – 6pm</a></li>
+        <li><a href="#">Public Holidays: Closed</a></li>
+      </ul>
+      <p class="footer-heading" style="margin-top:1.5rem;">Follow Us</p>
+      <ul class="footer-links">
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">WhatsApp</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    © 2025 Lumière Salon. Crafted with ♥ for Ahmedabad's beauty lovers.
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // TAB SWITCH
+  let currentTab = 'hair';
+  function switchTab(tab) {
+    currentTab = tab;
+    document.getElementById('tabContentHair').style.display = tab === 'hair' ? 'block' : 'none';
+    document.getElementById('tabContentSkin').style.display = tab === 'skin' ? 'block' : 'none';
+    document.getElementById('tabHair').style.background = tab === 'hair' ? 'var(--gold)' : 'transparent';
+    document.getElementById('tabHair').style.color = tab === 'hair' ? 'var(--black)' : 'var(--text)';
+    document.getElementById('tabSkin').style.background = tab === 'skin' ? 'var(--gold)' : 'transparent';
+    document.getElementById('tabSkin').style.color = tab === 'skin' ? 'var(--black)' : 'var(--text)';
+  }
+
+  // PHOTO UPLOAD
+  function handlePhotoUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const prev = document.getElementById('photoPreview');
+      prev.src = ev.target.result;
+      prev.style.display = 'block';
+      document.getElementById('uploadArea').classList.add('has-image');
+      document.querySelector('#uploadArea p').innerHTML = '<strong style="color:var(--gold)">✓ Photo uploaded</strong><br/><span style="font-size:0.78rem">Click to change</span>';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // AI ANALYSIS via Anthropic API
+  async function runAIAnalysis() {
+    const box = document.getElementById('aiResultBox');
+    const content = document.getElementById('aiResultContent');
+    box.className = 'ai-result-box show';
+    content.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div> <span style="color:var(--text);font-size:0.85rem;margin-left:0.5rem;">Analyzing your profile...</span>';
+
+    let prompt = '';
+    if (currentTab === 'hair') {
+      const type = document.getElementById('aiHairType').value || 'not specified';
+      const concern = document.getElementById('aiHairConcern').value || 'none';
+      const lifestyle = document.getElementById('aiLifestyle').value || 'not specified';
+      prompt = `You are an expert hair stylist at a luxury Indian salon called Lumière in Ahmedabad, Gujarat. A client has the following profile:
+- Hair type: ${type}
+- Main hair concern: ${concern}
+- Lifestyle: ${lifestyle}
+
+Give personalized hair service recommendations. Include:
+1. Top 3 recommended hairstyle/cut ideas (with brief reason for each)
+2. Best hair color options for their profile
+3. Recommended hair treatment
+4. A quick home care tip
+
+Format your response with clear headings using bold text. Keep it warm, professional, and specific to an Indian salon context. Be concise (under 200 words).`;
+    } else {
+      const skinType = document.getElementById('aiSkinType').value || 'not specified';
+      const concern = document.getElementById('aiSkinConcern').value || 'none';
+      const occasion = document.getElementById('aiOccasion').value || 'everyday';
+      prompt = `You are an expert skin therapist at a luxury Indian salon called Lumière in Ahmedabad, Gujarat. A client has:
+- Skin type: ${skinType}
+- Primary skin concern: ${concern}
+- Occasion: ${occasion}
+
+Give personalized skin & facial service recommendations. Include:
+1. Top 2 recommended facial treatments (with brief reason)
+2. Makeup tips suited to their skin
+3. A pre-appointment skincare tip
+
+Format your response with clear headings using bold text. Keep it warm, professional, and relevant to Indian skin tones. Be concise (under 200 words).`;
+    }
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 1000,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+
+      const data = await response.json();
+      const text = data.content?.map(b => b.text || '').join('') || 'Unable to generate recommendations. Please try again.';
+      
+      // Format response
+      let formatted = text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n\n/g, '</p><p style="margin-top:0.75rem;">')
+        .replace(/\n/g, '<br/>');
+
+      content.innerHTML = `<p>${formatted}</p>
+        <div class="reco-chips" style="margin-top:1.2rem;">
+          <span class="reco-chip">✂️ Book Service</span>
+          <span class="reco-chip">📞 Call Us</span>
+          <span class="reco-chip" onclick="scrollToBook()" style="cursor:pointer;">📅 Schedule Now</span>
+        </div>`;
+    } catch (err) {
+      content.innerHTML = `<strong>Sample Recommendation (Demo Mode):</strong><br/><br/>
+        Based on your profile, we recommend:<br/><br/>
+        <strong>Top Pick:</strong> A layered cut to add volume and movement suited to your hair type.<br/>
+        <strong>Treatment:</strong> Keratin smoothing treatment to manage frizz and add shine.<br/>
+        <strong>Color:</strong> Subtle babylights or a warm balayage to complement Indian skin tones.<br/>
+        <strong>Home Care:</strong> Use sulfate-free shampoo and apply hair mask weekly.<br/><br/>
+        <em style="color:var(--text);font-size:0.8rem;">Live AI requires an API key configured on the server.</em>
+        <div class="reco-chips" style="margin-top:1rem;">
+          <span class="reco-chip" onclick="scrollToBook()" style="cursor:pointer;">📅 Book Now</span>
+        </div>`;
+    }
+  }
+
+  // STEP FORM
+  let currentStep = 1;
+  let selectedServices = [];
+  let totalAmount = 0;
+
+  function goToStep(step) {
+    if (step === 2) {
+      const name = document.getElementById('bName').value.trim();
+      const phone = document.getElementById('bPhone').value.trim();
+      const date = document.getElementById('bDate').value;
+      const time = document.getElementById('bTime').value;
+      if (!name || !phone || !date || !time) {
+        showToast('Please fill in all required fields!'); return;
+      }
+    }
+    if (step === 3) {
+      if (selectedServices.length === 0) {
+        showToast('Please select at least one service!'); return;
+      }
+      buildConfirmSummary();
+    }
+
+    document.getElementById('step' + currentStep).classList.remove('active');
+    document.getElementById('stepInd' + currentStep)?.classList.remove('active');
+    document.getElementById('stepInd' + currentStep)?.classList.add('done');
+    
+    currentStep = step;
+    document.getElementById('step' + step).classList.add('active');
+    document.getElementById('stepInd' + step)?.classList.add('active');
+    document.getElementById('stepInd' + step)?.classList.remove('done');
+  }
+
+  function toggleService(el, name, price) {
+    el.classList.toggle('selected');
+    if (el.classList.contains('selected')) {
+      selectedServices.push({ name, price });
+    } else {
+      selectedServices = selectedServices.filter(s => s.name !== name);
+    }
+    totalAmount = selectedServices.reduce((a, s) => a + s.price, 0);
+    const totalEl = document.getElementById('selectedTotal');
+    if (selectedServices.length > 0) {
+      totalEl.style.display = 'block';
+      document.getElementById('totalAmt').textContent = '₹' + totalAmount.toLocaleString('en-IN') + '+';
+    } else {
+      totalEl.style.display = 'none';
+    }
+  }
+
+  function buildConfirmSummary() {
+    const name = document.getElementById('bName').value;
+    const phone = document.getElementById('bPhone').value;
+    const email = document.getElementById('bEmail').value;
+    const date = document.getElementById('bDate').value;
+    const time = document.getElementById('bTime').value;
+    const stylist = document.getElementById('bStylist').value || 'No preference';
+    const services = selectedServices.map(s => s.name).join(', ');
+
+    document.getElementById('confirmSummary').innerHTML = `
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;margin-bottom:1.5rem;">Appointment Summary</h3>
+      <div class="confirm-card">
+        <div class="confirm-row"><span>Name</span><span>${name}</span></div>
+        <div class="confirm-row"><span>Phone</span><span>${phone}</span></div>
+        ${email ? `<div class="confirm-row"><span>Email</span><span>${email}</span></div>` : ''}
+        <div class="confirm-row"><span>Date</span><span>${new Date(date).toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'})}</span></div>
+        <div class="confirm-row"><span>Time</span><span>${time}</span></div>
+        <div class="confirm-row"><span>Stylist</span><span>${stylist}</span></div>
+        <div class="confirm-row"><span>Services</span><span>${services}</span></div>
+        <div class="confirm-row"><span>Estimated Total</span><span>₹${totalAmount.toLocaleString('en-IN')}+</span></div>
+      </div>
+      <p style="color:var(--text);font-size:0.82rem;line-height:1.6;">By confirming, you agree to our cancellation policy. We'll send appointment details to your phone via WhatsApp.</p>
+    `;
+  }
+
+  function confirmBooking() {
+    document.getElementById('step3').classList.remove('active');
+    document.getElementById('stepInd3').classList.remove('active');
+    document.getElementById('stepInd3').classList.add('done');
+    document.getElementById('step4').classList.add('active');
+    showToast('Booking confirmed! Check WhatsApp for details.');
+  }
+
+  function resetForm() {
+    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.step-dot').forEach((d, i) => {
+      d.classList.remove('active', 'done');
+      if (i === 0) d.classList.add('active');
+    });
+    document.getElementById('step1').classList.add('active');
+    selectedServices = []; totalAmount = 0; currentStep = 1;
+    document.querySelectorAll('.service-pick').forEach(s => s.classList.remove('selected'));
+    document.getElementById('selectedTotal').style.display = 'none';
+    document.getElementById('bName').value = '';
+    document.getElementById('bPhone').value = '';
+    document.getElementById('bEmail').value = '';
+    document.getElementById('bDate').value = '';
+  }
+
+  // UTILS
+  function scrollToBook() {
+    document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // Set min date
+  document.getElementById('bDate').min = new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>
